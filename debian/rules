@@ -18,7 +18,6 @@ CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS)
 LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
 
 %:
-	dh_installinit
 	dh $@ --with autoreconf
 
 override_dh_clean:
