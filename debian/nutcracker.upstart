@@ -24,6 +24,11 @@ pre-start script
 		stop || true ; exit 2
 	fi
 	test -r $DEFAULTFILE && . $DEFAULTFILE
+	for dir in $LOGDIR $RUNDIR ; do
+		mkdir -p $dir
+		chmod 775 $dir
+		chown -R nobody:nogroup $dir
+	done
 	[ "x$ENABLED" = xyes -o "x$ENABLED" = x1 ] || { stop; exit 0; }
 	if ! ${DAEMON} -t -c ${CONF_FILE} >/dev/null 2>&1; then
 		${DAEMON} -t -c ${CONF_FILE}
@@ -32,11 +37,6 @@ pre-start script
 end script
 script
 	test -r $DEFAULTFILE && . $DEFAULTFILE
-	for dir in $LOGDIR $RUNDIR ; do
-		mkdir -p $dir
-		chmod 775 $dir
-		chown -R nobody:nogroup $dir
-	done
 	LOGFILE=$LOGDIR/nutcracker.log
 	PIDFILE=$RUNDIR/nutcracker.pid
 	exec $DAEMON -s ${STATS_PORT} -i ${STATS_INTERVAL} -c ${CONF_FILE} -p ${PIDFILE} -o ${LOGFILE}
