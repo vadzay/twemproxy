@@ -1,3 +1,22 @@
+all: help
+
+.PHONY: help
+help:
+	@echo "make build - compiles everything"
+	@echo "make package - build debian package"
+
+configure: Makefile.am
+	autoreconf -fvi
+
+Makefile: configure
+	./$< --enable-debug=log
+
+.PHONY: build
+build: Makefile
+	${MAKE};
+
 .PHONY: package
 package:
 	debuild -i -us -uc -b
+
+# vim: set ts=8 sw=8 noet:
