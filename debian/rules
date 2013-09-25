@@ -18,8 +18,8 @@ CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS)
 LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
 
 %:
-	dh $@ --with autoreconf
 	dh_installinit
+	dh $@ --with autoreconf
 
 override_dh_clean:
 	rm -rf contrib/yaml-0.1.4/*

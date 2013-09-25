@@ -10,8 +10,6 @@ respawn
 
 limit nofile 20480 20480
 
-reload signal SIGHUP
-
 env CONF_FILE=/etc/nutcracker.conf
 env DEFAULTFILE=/etc/default/nutcracker
 env RUNDIR=/var/run/nutcracker
@@ -32,7 +30,7 @@ pre-start script
 		mkdir -p $dir
 		chmod 775 $dir
 		chown -R nobody:nogroup $dir
-	end
+	done
 	PIDFILE=$RUNNDIR/nutcracker.pid
 	if ${DAEMON} -t -c ${CONF_FILE} >/dev/null 2>&1; then
 		return 0
