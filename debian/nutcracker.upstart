@@ -40,5 +40,5 @@ pre-start script
 	fi
 end script
 script
-	exec $DAEMON -d -s ${STATS_PORT} -i ${STATS_INTERVAL} -c ${CONF_FILE} -p ${PIDFILE} -o ${LOGFILE}
+	exec $DAEMON -s ${STATS_PORT} -i ${STATS_INTERVAL} -c ${CONF_FILE} -p ${PIDFILE} -o ${LOGFILE}
 end script
