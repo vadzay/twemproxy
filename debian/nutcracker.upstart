@@ -1,0 +1,46 @@
+description     "NutCracker"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+setuid nobody
+setgid nogroup
+
+respawn
+
+limit nofile 20480 20480
+
+reload signal SIGHUP
+
+env CONF_FILE=/etc/nutcracker.conf
+env DEFAULTFILE=/etc/default/nutcracker
+env RUNDIR=/var/run/nutcracker
+env STATS_PORT=22222
+env STATS_INTERVAL=30000
+env LOGDIR=/var/log/nutcracker
+env DAEMON=/usr/sbin/nutcracker
+
+pre-start script
+	if [ ! -f ${CONF_FILE} ]; then
+		echo "Please fill config file in ${CONF_FILE} and restart."
+		exit 2
+	fi
+	test -r $DEFAULTFILE && . $DEFAULTFILE
+	[ "x$START" != xno ] || { stop; exit 0; }
+	LOGFILE=$LOGDIR/nutcracker.log
+	for dir in $LOGDIR $RUNDIR ; do
+		mkdir -p $dir
+		chmod 775 $dir
+		chown -R nobody:nogroup $dir
+	end
+	PIDFILE=$RUNNDIR/nutcracker.pid
+	if ${DAEMON} -t -c ${CONF_FILE} >/dev/null 2>&1; then
+		return 0
+	else
+		${DAEMON} -t -c ${CONF_FILE}
+		return $?
+	fi
+end script
+script
+	exec /usr/sbin/nutcracker -d -s ${STATS_PORT} -i ${STATS_INTERVAL} -c ${CONF_FILE} -p ${PIDFILE} -o ${LOGFILE}
+end script
