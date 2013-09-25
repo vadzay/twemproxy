@@ -9,11 +9,11 @@ configure: Makefile.am
 	autoreconf -fvi
 
 Makefile: configure
-	./$< --enable-debug=log
+	( cd ${PWD} && ./$< --enable-debug=log )
 
 .PHONY: build
 build: Makefile
-	${MAKE};
+	( cd ${PWD} && ${MAKE} )
 
 .PHONY: package
 package:
