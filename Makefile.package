@@ -1,0 +1,3 @@
+.PHONY: package
+package:
+	debuild -i -us -uc -b
